@@ -1,0 +1,36 @@
+{
+  "name": "rustoceanic",
+  "description": "Game Of Rust",
+  "version": "1.0.0",
+  "type": "module",
+  "keywords": [],
+  "scripts": {
+    "dev": "vite --host --open",
+    "lint": "eslint --ext .js ./",
+    "lint:fix": "eslint --fix --ext .js ./",
+    "format": "prettier --write \"./**/*.{js,jsx,json,css}\"",
+    "build": "vite build",
+    "preview": "vite preview --open",
+    "buildpreview": "vite build && vite preview --open"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "autoprefixer": "^10.4.23",
+    "cssnano": "^7.1.2",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.5",
+    "globals": "^17.1.0",
+    "postcss": "^8.5.6",
+    "postcss-nesting": "^14.0.0",
+    "prettier": "^3.8.1",
+    "vite": "^7.3.1",
+    "vite-plugin-eslint": "^1.8.1",
+    "vite-plugin-top-level-await": "^1.6.0",
+    "vite-plugin-wasm": "^3.5.0"
+  },
+  "dependencies": {
+    "engine-on-rust": "file:../pkg"
+  }
+}
