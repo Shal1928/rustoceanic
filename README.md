@@ -12,8 +12,16 @@ wasm-pack build --target web
 
 ### Web
 
-In `www` dir
+In `./www` dir
+
+#### 1 Install Dependencies
 
 ```sh
-npm run build
+npm install
+```
+
+#### 2 Run
+
+```sh
+vite --host --open
 ```
