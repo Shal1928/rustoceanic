@@ -23,5 +23,5 @@ npm install
 #### 2 Run
 
 ```sh
-vite --host --open
+npm run dev
 ```
