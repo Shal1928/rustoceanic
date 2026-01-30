@@ -1,41 +1,47 @@
 import '../styles/style.css';
 
-import initEngine, {
-  SomeEnum,
-  SomeStructure,
-  string_return_function,
-  error_throw_function,
-  classic_alert,
-} from 'engine-on-rust';
+import initEngine, { Universe, PlayerActions } from 'engine-on-rust';
 
-const engineModule = await initEngine();
+const engine = await initEngine();
 
-let elementsCount = 42;
+const universe = new Universe();
 
-const struct = new SomeStructure(elementsCount);
+const player = universe.create_player();
 
-let thirdElementDiv = document.getElementById('third-element');
-if (thirdElementDiv) {
-  thirdElementDiv.innerText =
-    struct.get_element(2) == SomeEnum.Var1 ? 'Var1' : 'Var2';
+const get_russian_action_name = function (action: PlayerActions) {
+    return {
+        0: 'Пойти в начальную комнату',
+        1: 'Пойти в другую комнату',
+        2: 'Взять предмет из сундука',
+        3: 'Положить предмет в сундук',
+        4: 'Похвастаться предметом'
+    }[action];
 }
 
-let memoryDiv = document.getElementById('memory-data');
-let elementsMemory = new Uint8Array(
-  engineModule.memory.buffer,
-  struct.elements_ptr(),
-  elementsCount,
-);
-if (memoryDiv) {
-  memoryDiv.innerText = elementsMemory.join('');
+function show_avalible_actions() {
+    const buttons_place = document.getElementById('action-buttons')!; // '!' means - It's not null
+    buttons_place.innerHTML = ""; //Clear buttons
+
+    const avalible_actions: PlayerActions[] = universe.available_actions(player); // Generator can't get type of array arg. I helped him
+    for (const action of avalible_actions) {
+        // Create button for action
+        let button = document.createElement("input");
+        button.setAttribute('type', 'button');
+        const readable_action_name = get_russian_action_name(action);
+        button.value = readable_action_name!;
+        button.addEventListener('click', () => {
+            let show_last_action = document.getElementById('last-action')!; 
+            universe.use_action(player, action);
+            show_last_action.innerText = `Вы выбрали "${readable_action_name}". Что теперь?`;
+            show_avalible_actions();
+        });
+        buttons_place.appendChild(button);
+    }
 }
 
-console.warn(string_return_function('my string'));
+show_avalible_actions();
 
-classic_alert();
 
-try {
-  error_throw_function();
-} catch (e) {
-  console.error(e);
-}
+
+
+
