@@ -43,7 +43,7 @@ export default defineConfig({
     eslint({
       cache: false,
       fix: true,
-      include: ['src/**/*.js', 'src/**/*.mjs', 'src/**/*.cjs', 'src/**/*.ts'],
+      include: ['src/**/*.js', 'src/**/*.mjs', 'src/**/*.cjs'],
       exclude: ['node_modules', 'dist', 'build'],
     }),
     wasm(),
