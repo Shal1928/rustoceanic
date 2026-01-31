@@ -1,6 +1,6 @@
 use wasm_bindgen::prelude::*;
 
-use crate::{inventory_item::InvenotoryItem, place::Place};
+use crate::{actors::inventory_item::InvenotoryItem, stages::place::Place};
 
 #[wasm_bindgen]
 pub struct Player {

@@ -3,7 +3,7 @@ use wasm_bindgen::prelude::*;
 // In POC of technology universe contain two locations and one chest
 // By default chest contain one item, which player can take to inventory
 
-use crate::{inventory_item::InvenotoryItem, player::Player, place::Place};
+use crate::{actors::inventory_item::InvenotoryItem, actors::player::Player, stages::place::Place};
 
 
 #[wasm_bindgen]
