@@ -1,6 +1,7 @@
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
+#[derive(Hash, PartialEq, Eq, Clone)] // For use in hash map
 pub struct InvenotoryItem {
     name: String
 }
@@ -15,7 +16,7 @@ impl InvenotoryItem {
 static IMPORTANT_ITEM_NAME: &'static str = "Very important item";
 
 impl InvenotoryItem {
-    pub fn new_important() -> Self {
+    pub fn important() -> Self {
         Self { name: IMPORTANT_ITEM_NAME.to_string() }
     }
 

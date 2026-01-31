@@ -25,7 +25,7 @@ impl Universe {
 
     #[wasm_bindgen(constructor)]
     pub fn new() -> Self {
-        Self { chest: Some(InvenotoryItem::new_important()) } // Put item into chest
+        Self { chest: Some(InvenotoryItem::important()) } // Put item into chest
     }
 
     pub fn create_player(&self) -> Player {
@@ -35,7 +35,7 @@ impl Universe {
     pub fn available_actions(&self, player: &Player) -> Vec<PlayerActions> {
         let mut res = Vec::<PlayerActions>::new();
         if player.position == Place::DefaultRoom {
-            if player.have_item(InvenotoryItem::important_name()) {
+            if player.have_item(&InvenotoryItem::important()) {
                 res.push(PlayerActions::BoastTheItem);
             }
             res.push(PlayerActions::GoToAnotherRoom);
@@ -43,7 +43,7 @@ impl Universe {
         if player.position == Place::AnotherRoom {
             match self.chest {
                 None => {
-                    if player.have_item(InvenotoryItem::important_name()) {
+                    if player.have_item(&InvenotoryItem::important()) {
                         res.push(PlayerActions::PutItemToChest);
                     }
                     // else - proebal
@@ -65,10 +65,10 @@ impl Universe {
             },
             PlayerActions::GetItemFromChest => {
                 let item = self.chest.take().unwrap(); // We know chest contains item. In another case - panic. `Take` place None on chest
-                player.add_item_to_inventory(item);
+                player.add_item_to_inventory(&item);
             },
             PlayerActions::PutItemToChest => {
-                let item = player.get_item_from_inventory().unwrap(); // Same case. We know: player have item
+                let item = player.get_item_from_inventory(&InvenotoryItem::important()).unwrap(); // Same case. We know: player have item
                 self.chest = Some(item);
             },
             PlayerActions::GoToAnotherRoom => {
