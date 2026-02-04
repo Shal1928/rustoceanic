@@ -14,13 +14,20 @@ const get_russian_action_name = function (action: PlayerActions) {
         1: 'Пойти в другую комнату',
         2: 'Взять предмет из сундука',
         3: 'Положить предмет в сундук',
-        4: 'Похвастаться предметом'
+        4: 'Похвастаться предметом',
+        5: 'Использовать'
     }[action];
 }
 
 function show_avalible_actions() {
     const buttons_place = document.getElementById('action-buttons')!; // '!' means - It's not null
     buttons_place.innerHTML = ""; //Clear buttons
+
+    universe.set_on_update((activate_info: string) => {
+        let spec_desc = document.getElementById('special-desc')!; 
+        spec_desc.innerText = activate_info;
+        console.log('Use result:', activate_info);
+    });
 
     const avalible_actions: PlayerActions[] = universe.available_actions(player); // Generator can't get type of array arg. I helped him
     for (const action of avalible_actions) {
