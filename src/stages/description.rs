@@ -9,20 +9,22 @@ pub struct Description {
     explain: String,
     items: Vec<InvenotoryItem>,
     activate: String,
-    activate_trigger: InventorySpecial
+    activate_trigger: InventorySpecial,
+    is_activated: bool
 }
 
 #[wasm_bindgen]
 impl Description {
 
     #[wasm_bindgen(constructor)]
-    pub fn new(title: &str, explain: &str, activate: &str, _activate_trigger: InventorySpecial) -> Self {
+    pub fn new(title: &str, explain: &str, activate: &str, activate_trigger: InventorySpecial) -> Self {
         Self {
             title: title.to_string(),
             explain: explain.to_string(),
             items: Vec::new(),
             activate: activate.to_string(),
-            activate_trigger: _activate_trigger
+            activate_trigger,
+            is_activated: false
         }
     }
     
@@ -41,12 +43,18 @@ impl Description {
         self.explain.clone()
     }
 
-    pub fn check_activate(&self, _activate_trigger: InventorySpecial) -> String {
-        if self.activate_trigger == _activate_trigger  {
+    #[wasm_bindgen(getter)]
+    pub fn activate(&self) -> String {
+        if  self.is_activated {
             self.activate.clone()
-        } else {
+        }
+        else {
             "Nothing happened".to_string()
         }
+    }
+
+    pub fn check_activate(&mut self, activate_trigger: InventorySpecial) {
+        self.is_activated = self.activate_trigger == activate_trigger;
     }
     
     #[wasm_bindgen(getter)]

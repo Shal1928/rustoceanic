@@ -1,16 +1,14 @@
 use wasm_bindgen::prelude::*;
-use web_sys::js_sys;
 
 // In POC of technology universe contain two locations and one chest
 // By default chest contain one item, which player can take to inventory
 
-use crate::{actors::{inventory_item::{InvenotoryItem, InventorySpecial}, player::{Player, PlayerActions}}, stages::{description::{self, Description}, place::Place}};
+use crate::{actors::{inventory_item::{InvenotoryItem, InventorySpecial}, player::{Player, PlayerActions}}, stages::{description::{Description}, place::Place}};
 
 
 #[wasm_bindgen]
 pub struct Universe {
     description: Option<Description>, // If chest empty -> none, else invenotory item
-    on_update: Option<js_sys::Function>
 }
 
 static COMPILYATOR_9000: &'static str = "Компилятор 9000";
@@ -26,13 +24,16 @@ impl Universe {
 
         Self { 
             description: Some(desc),
-            on_update: None, 
         }
         
     }
 
     pub fn create_player(&self) -> Player {
         return Player::new(Place::DefaultRoom);
+    }
+
+    pub fn get_description(&self) -> Option<Description> {
+        return self.description.clone();
     }
 
     pub fn available_actions(&self, player: &Player) -> Vec<PlayerActions> {
@@ -64,7 +65,7 @@ impl Universe {
         res
     }
 
-    // Player and world can change by actions => nut reference
+    // Player and world can change by actions => mut reference
     //
     pub fn use_action(&mut self, player: &mut Player, action: PlayerActions) {
         match action {
@@ -72,7 +73,7 @@ impl Universe {
                 player.position = Place::DefaultRoom;
             },
             PlayerActions::GetItemFromChest => {
-                match self.description.as_ref() {
+                match self.description.clone() {
                     Some(desc) => {
                         player.add_item_to_inventory(&desc.items().pop().take().unwrap());
                     },
@@ -85,7 +86,7 @@ impl Universe {
                     Some(item_in_rhand) => {
                        player.get_item_from_inventory(&item_in_rhand).take().unwrap();
 
-                        match self.description.as_ref() {
+                        match self.description.clone() {
                             Some(desc) => {
                             desc.items().push(item_in_rhand);
                             },
@@ -102,29 +103,13 @@ impl Universe {
                 // Do nothing
             },
             PlayerActions::Use => {
-
                 let special = player.use_item(&COMPILYATOR_9000);
-
-                if let Some(ref callback) = self.on_update {
-                    let this = JsValue::null();
-                    let mut activate_info = "There's nothing to apply here".to_string();
-
-                    //тут мне надо объяснить - нихуя не понятно, но очень инетерсно
-                    match self.description.as_ref() {
-                        Some(desc) => {
-                            activate_info = desc.check_activate(special);
-                        },
-                        None => { /* not described room */ }
-                    }
-
-                    let _ = callback.call1(&this, &JsValue::from(activate_info));
+                
+                match self.description.clone() {
+                    Some(mut desc) => { desc.check_activate(special) },
+                    None => { unreachable!() }
                 }
             }
         }
-    }
-
-     #[wasm_bindgen]
-    pub fn set_on_update(&mut self, callback: js_sys::Function) {
-        self.on_update = Some(callback);
     }
 }

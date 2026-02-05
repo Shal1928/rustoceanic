@@ -24,11 +24,11 @@ pub struct Player {
 
 // Can't use from wasm
 impl Player {
-    pub fn new(_position: Place) -> Self {
+    pub fn new(position: Place) -> Self {
         Self {
             name: "Player".to_string(),
             inventory: HashMap::new(),
-            position: _position,
+            position,
             right_hand: None
         }
     }
@@ -75,19 +75,17 @@ impl Player {
     }
 
     pub fn right_hand(&self) -> Option<InvenotoryItem> {
-        self.right_hand.clone()
+        return self.right_hand.clone();
     }
 
     pub fn use_item(&mut self, item_name: &str) -> InventorySpecial {
-         
-        //linq style :-) ha-ha-ha
         self.right_hand = self.inventory
         .keys()
         .find(|item| item.name() == item_name).cloned();
 
         match &self.right_hand {
             Some(item) => item.special(), 
-            None => InventorySpecial::Impossible,
+            None => unreachable!(),
         }
     }
 }

@@ -4,7 +4,6 @@ use wasm_bindgen::prelude::*;
 #[repr(u8)]
 #[derive(Hash, PartialEq, Eq, Clone, Copy)]
 pub enum InventorySpecial {
-    Impossible = 0,
     RestoreMemory = 1,
     FixThis = 2,
     Build = 3,
@@ -34,7 +33,7 @@ impl InvenotoryItem {
     }
 
      pub fn special(&self) -> InventorySpecial {
-        return self.special.clone();
+        return self.special;
     }
 }
 
