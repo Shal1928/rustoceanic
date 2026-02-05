@@ -113,3 +113,25 @@ impl Universe {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn player_can_do_basic() {
+        let mut universe = Universe::new();
+        let mut player = universe.create_player();
+        universe.use_action(&mut player, PlayerActions::GoToAnotherRoom);
+        universe.use_action(&mut player, PlayerActions::GetItemFromChest);
+        let avalible_actions = universe.available_actions(&mut player);
+        let use_action = avalible_actions.iter().find(|action| **action == PlayerActions::Use);
+        assert_eq!(use_action, Some(&PlayerActions::Use));
+        let universe_description = universe.get_description();
+        assert_eq!(universe_description.unwrap().activate(), "Nothing happened");
+        universe.use_action(&mut player, PlayerActions::Use);
+        let universe_description = universe.get_description();
+        assert_ne!(universe_description.unwrap().activate(), "Nothing happened");
+
+    }
+}
