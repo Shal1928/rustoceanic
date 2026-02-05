@@ -73,7 +73,7 @@ impl Universe {
                 player.position = Place::DefaultRoom;
             },
             PlayerActions::GetItemFromChest => {
-                match self.description.clone() {
+                match self.description.as_mut() {
                     Some(desc) => {
                         player.add_item_to_inventory(&desc.items().pop().take().unwrap());
                     },
@@ -86,9 +86,9 @@ impl Universe {
                     Some(item_in_rhand) => {
                        player.get_item_from_inventory(&item_in_rhand).take().unwrap();
 
-                        match self.description.clone() {
+                        match self.description.as_mut() {
                             Some(desc) => {
-                            desc.items().push(item_in_rhand);
+                                desc.items().push(item_in_rhand);
                             },
                             None => { /* dropped */ }
                         }
@@ -105,8 +105,8 @@ impl Universe {
             PlayerActions::Use => {
                 let special = player.use_item(&COMPILYATOR_9000);
                 
-                match self.description.clone() {
-                    Some(mut desc) => { desc.check_activate(special) },
+                match self.description.as_mut() {
+                    Some(desc) => { desc.check_activate(special) },
                     None => { unreachable!() }
                 }
             }
