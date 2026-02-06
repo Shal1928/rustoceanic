@@ -4,6 +4,7 @@ use wasm_bindgen::prelude::*;
 
 use crate::{actors::inventory_item::{InvenotoryItem, InventorySpecial}, stages::place::Place};
 
+#[derive(PartialEq, Eq, Debug)] //For tests and may be latter
 #[wasm_bindgen]
 pub enum PlayerActions {
     GoToDefaultRoom,
