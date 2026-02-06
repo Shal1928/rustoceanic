@@ -14,7 +14,8 @@ const get_russian_action_name = function (action: PlayerActions) {
         1: 'Пойти в другую комнату',
         2: 'Взять предмет из сундука',
         3: 'Положить предмет в сундук',
-        4: 'Похвастаться предметом'
+        4: 'Похвастаться предметом',
+        5: 'Использовать'
     }[action];
 }
 
@@ -28,11 +29,15 @@ function show_avalible_actions() {
         let button = document.createElement("input");
         button.setAttribute('type', 'button');
         const readable_action_name = get_russian_action_name(action);
+        let desc = universe.get_description()!;
+        let spec_desc = document.getElementById('special-desc')!; 
+        spec_desc.innerText = desc.activate;
+        let expl = desc.explain;
         button.value = readable_action_name!;
         button.addEventListener('click', () => {
             let show_last_action = document.getElementById('last-action')!; 
             universe.use_action(player, action);
-            show_last_action.innerText = `Вы выбрали "${readable_action_name}". Что теперь?`;
+            show_last_action.innerText = `"${expl}" Вы выбрали "${readable_action_name}". Что теперь?`;
             show_avalible_actions();
         });
         buttons_place.appendChild(button);

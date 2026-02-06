@@ -1,5 +1,12 @@
+use wasm_bindgen::prelude::wasm_bindgen;
+
+use crate::utils::set_panic_hook;
+
 mod utils;
-mod place;
-pub mod universe;
-pub mod player;
-pub mod inventory_item;
+mod actors;
+mod stages;
+
+#[wasm_bindgen(start)]
+pub fn init() {
+    set_panic_hook();
+}
